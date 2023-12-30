@@ -1,29 +1,26 @@
 name: Deploy React app
-permissions: # Les actions ont le droit de créer et de pousser de contenu sur d'autres branches
+permissions:
   contents: write
 on:
   workflow_dispatch:
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Code
         uses: actions/checkout@v3
-
       - name: Install Node v18
         uses: actions/setup-node@v3
         with:
           node-version: 18
-
       - name: Install Dependencies
         run: npm install
-
       - name: Build
         run: npm run build
-
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4.1.1
         with:
-          folder: build # Le dossier à copier dans la nouvelle branche
-          branch: gh-pages # Le nom de la nouvelle branche
+          folder: build
+          branch: gh-pages
+        env:
+          ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
